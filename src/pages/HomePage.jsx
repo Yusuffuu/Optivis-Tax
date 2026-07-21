@@ -65,7 +65,7 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center bg-primary overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-linear from-primary to-primary-800 opacity-90"></div>
-          <div className="absolute inset-0 bg-[url('/hero-pattern.svg')] opacity-10"></div>
+          <div className="absolute inset-0 bg-[url('./hero-pattern.svg')] opacity-10"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
@@ -78,7 +78,7 @@ export default function HomePage() {
             {/* Logo replaced Shield icon */}
             <div className="flex justify-center mb-8">
               <img 
-                src="/logo.png" 
+                src="./logo.png" 
                 alt="Optivis Tax" 
                 className="w-100 h-100 md:w-90 md:h-90 object-contain"
               />
@@ -233,7 +233,7 @@ export default function HomePage() {
                 <div className="space-y-6">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gold rounded-full flex items-center justify-center">
-                      <img src="/icons/shield.svg" alt="Integrity" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(11%) sepia(53%) saturate(2102%) hue-rotate(191deg) brightness(34%) contrast(98%)' }} />
+                      <img src="./shield.svg" alt="Integrity" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(11%) sepia(53%) saturate(2102%) hue-rotate(191deg) brightness(34%) contrast(98%)' }} />
                     </div>
                     <div>
                       <h4 className="font-semibold text-lg">Integrity</h4>
@@ -267,7 +267,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="section-padding bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+        <div className="absolute inset-0 bg-[url('./pattern.svg')] opacity-5"></div>
         <div className="container-custom relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

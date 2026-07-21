@@ -45,7 +45,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/logo.png" 
+              src="./logo.png" 
               alt="Optivis Tax" 
               className={`h-50 w-auto transition-all duration-300 ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`}
             />

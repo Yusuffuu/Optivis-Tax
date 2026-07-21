@@ -17,7 +17,7 @@ import ScrollToTop from './components/ScrollToTop';
 function App() {
   return (
     <HelmetProvider>
-      <Router>
+      <Router basename="/Optivis-Tax">
         <ScrollToTop />
         <Layout>
           <AnimatePresence mode="wait">
@@ -35,7 +35,7 @@ function App() {
             </Routes>
           </AnimatePresence>
         </Layout>
-      </Router>
+    </Router>
     </HelmetProvider>
   );
 }
