@@ -48,7 +48,7 @@ export default function PortalSidebar({ isOpen, onClose }) {
                     <div className="p-6 border-b border-primary-700">
                         <div className="flex items-center justify-between">
                             <Link to="/portal/dashboard" className="flex items-center space-x-3">
-                                <img src="/logo.png" alt="Optivis" className="w-10 h-10 object-contain" />
+                                <img src="../logo.png" alt="Optivis" className="w-10 h-10 object-contain" />
                                 <div>
                                     <h2 className="text-xl font-serif font-bold">Optivis</h2>
                                     <p className="text-xs text-gold uppercase tracking-widest">Client Portal</p>

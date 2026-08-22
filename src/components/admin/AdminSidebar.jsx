@@ -48,7 +48,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
                     <div className="p-6 border-b border-primary-700">
                         <div className="flex items-center justify-between">
                             <Link to="/admin/dashboard" className="flex items-center space-x-3">
-                                <img src="/logo.png" alt="Optivis" className="w-10 h-10 object-contain" />
+                                <img src="../logo.png" alt="Optivis" className="w-10 h-10 object-contain" />
                                 <div>
                                     <h2 className="text-xl font-serif font-bold">Optivis</h2>
                                     <p className="text-xs text-gold uppercase tracking-widest">Admin Panel</p>
@@ -83,8 +83,8 @@ export default function AdminSidebar({ isOpen, onClose }) {
                                     to={item.href}
                                     onClick={onClose}
                                     className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive
-                                            ? 'bg-gold text-primary font-semibold'
-                                            : 'text-gray-300 hover:bg-primary-700'
+                                        ? 'bg-gold text-primary font-semibold'
+                                        : 'text-gray-300 hover:bg-primary-700'
                                         }`}
                                 >
                                     <item.icon className="w-5 h-5" />

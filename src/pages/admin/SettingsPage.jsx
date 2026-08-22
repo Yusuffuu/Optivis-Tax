@@ -136,7 +136,7 @@ export default function SettingsPage() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Company Logo</label>
                                         <div className="flex items-center space-x-4">
                                             <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain" />
+                                                <img src="../logo.png" alt="Logo" className="w-16 h-16 object-contain" />
                                             </div>
                                             <div>
                                                 <button type="button" className="btn-outline text-sm">Change Logo</button>

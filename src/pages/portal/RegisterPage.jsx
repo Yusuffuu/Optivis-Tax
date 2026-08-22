@@ -30,7 +30,7 @@ export default function RegisterPage() {
                     className="bg-white rounded-2xl shadow-xl p-8"
                 >
                     <div className="text-center mb-8">
-                        <img src="/logo.png" alt="Optivis Tax" className="w-20 h-20 mx-auto mb-4 object-contain" />
+                        <img src="../logo.png" alt="Optivis Tax" className="w-20 h-20 mx-auto mb-4 object-contain" />
                         <h1 className="text-3xl font-serif font-bold text-primary">Create Account</h1>
                         <p className="text-gray-600 mt-2">Join Optivis Tax for expert tax services</p>
                     </div>
@@ -49,7 +49,7 @@ export default function RegisterPage() {
                                 <input
                                     {...register('fullName', { required: 'Full name is required' })}
                                     type="text"
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                                     placeholder="John Kamau"
                                 />
                             </div>
@@ -66,7 +66,7 @@ export default function RegisterPage() {
                                         pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' }
                                     })}
                                     type="email"
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                                     placeholder="john@example.com"
                                 />
                             </div>
@@ -81,7 +81,7 @@ export default function RegisterPage() {
                                     <input
                                         {...register('phone')}
                                         type="tel"
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                                         placeholder="+254 700 000 000"
                                     />
                                 </div>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
                                     <input
                                         {...register('company')}
                                         type="text"
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                                         placeholder="Company name"
                                     />
                                 </div>
@@ -110,7 +110,7 @@ export default function RegisterPage() {
                                         minLength: { value: 6, message: 'Password must be at least 6 characters' }
                                     })}
                                     type={showPassword ? 'text' : 'password'}
-                                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                                     placeholder="Create a password"
                                 />
                                 <button

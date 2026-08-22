@@ -34,7 +34,7 @@ export default function LoginPage() {
                     className="bg-white rounded-2xl shadow-xl p-8"
                 >
                     <div className="text-center mb-8">
-                        <img src="/logo.png" alt="Optivis Tax" className="w-20 h-20 mx-auto mb-4 object-contain" />
+                        <img src="../logo.png" alt="Optivis Tax" className="w-20 h-20 mx-auto mb-4 object-contain" />
                         <h1 className="text-3xl font-serif font-bold text-primary">Welcome Back</h1>
                         <p className="text-gray-600 mt-2">Sign in to your client portal</p>
                     </div>
