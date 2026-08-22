@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
     Star,
     CheckCircle,
@@ -17,7 +17,7 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import { mockTestimonials } from '../../data/mockData';
 
 export default function TestimonialsPage() {
-    const [testimonials, setTestimonials] = useState(mockTestimonials);
+    const [testimonials, setTestimonials] = useState(mockTestimonials || []);
     const [filter, setFilter] = useState('all'); // all, visible, pending
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -42,10 +42,16 @@ export default function TestimonialsPage() {
     const filteredTestimonials = testimonials.filter(t => {
         const matchesFilter =
             filter === 'all' ? true : filter === 'visible' ? t.visible : !t.visible;
-        const matchesSearch =
-            t.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            t.review.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            t.service.toLowerCase().includes(searchTerm.toLowerCase());
+
+        // Safe search with fallbacks
+        const searchableText = [
+            t.userName || t.name || '',
+            t.review || t.comment || '',
+            t.service || t.company || ''
+        ].join(' ').toLowerCase();
+
+        const matchesSearch = searchTerm === '' || searchableText.includes(searchTerm.toLowerCase());
+
         return matchesFilter && matchesSearch;
     });
 
@@ -58,7 +64,7 @@ export default function TestimonialsPage() {
             subtitle="Curate and approve public feedback and client endorsements displayed on the website"
         >
             {/* Filter Toolbar */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="relative flex-1 max-w-sm">
                     <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                     <input
@@ -73,21 +79,21 @@ export default function TestimonialsPage() {
                 <div className="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold text-slate-600">
                     <button
                         onClick={() => setFilter('all')}
-                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'all' ? 'bg-white text-primary shadow-xs' : 'hover:text-primary'
+                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'all' ? 'bg-white text-primary shadow-sm' : 'hover:text-primary'
                             }`}
                     >
                         All ({testimonials.length})
                     </button>
                     <button
                         onClick={() => setFilter('visible')}
-                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'visible' ? 'bg-white text-primary shadow-xs' : 'hover:text-primary'
+                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'visible' ? 'bg-white text-primary shadow-sm' : 'hover:text-primary'
                             }`}
                     >
                         Live on Site ({visibleCount})
                     </button>
                     <button
                         onClick={() => setFilter('pending')}
-                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'pending' ? 'bg-white text-primary shadow-xs' : 'hover:text-primary'
+                        className={`px-3 py-1.5 rounded-lg transition-all ${filter === 'pending' ? 'bg-white text-primary shadow-sm' : 'hover:text-primary'
                             }`}
                     >
                         Pending ({pendingCount})
@@ -100,22 +106,26 @@ export default function TestimonialsPage() {
                 {filteredTestimonials.length > 0 ? (
                     filteredTestimonials.map((testimonial, index) => (
                         <motion.div
-                            key={testimonial.id}
+                            key={testimonial.id || index}
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-5 flex flex-col justify-between hover:shadow-md transition-all"
+                            className="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 flex flex-col justify-between hover:shadow-md transition-all"
                         >
                             <div>
                                 {/* Header / User + Stars */}
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="flex items-center space-x-3">
-                                        <div className="w-11 h-11 rounded-2xl bg-linear-to-tr from-primary to-primary-700 text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
-                                            {testimonial.userName.charAt(0)}
+                                        <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-primary-700 text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+                                            {(testimonial.userName || testimonial.name || 'C').charAt(0)}
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold text-slate-800 text-sm">{testimonial.userName}</h3>
-                                            <p className="text-xs text-gold font-medium">{testimonial.service}</p>
+                                            <h3 className="font-semibold text-slate-800 text-sm">
+                                                {testimonial.userName || testimonial.name || 'Client'}
+                                            </h3>
+                                            <p className="text-xs text-gold font-medium">
+                                                {testimonial.service || testimonial.company || 'Optivis Tax Service'}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -124,9 +134,9 @@ export default function TestimonialsPage() {
                                         {[...Array(5)].map((_, i) => (
                                             <Star
                                                 key={i}
-                                                className={`w-3.5 h-3.5 ${i < testimonial.rating
-                                                        ? 'text-gold fill-gold'
-                                                        : 'text-slate-200'
+                                                className={`w-3.5 h-3.5 ${i < (testimonial.rating || 5)
+                                                    ? 'text-gold fill-gold'
+                                                    : 'text-slate-200'
                                                     }`}
                                             />
                                         ))}
@@ -135,7 +145,7 @@ export default function TestimonialsPage() {
 
                                 {/* Review Quote */}
                                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic mb-4 bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
-                                    "{testimonial.review}"
+                                    "{testimonial.review || testimonial.comment || 'Excellent professional service!'}"
                                 </p>
                             </div>
 
@@ -143,8 +153,8 @@ export default function TestimonialsPage() {
                             <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
                                 <span
                                     className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold gap-1.5 ${testimonial.visible
-                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                            : 'bg-amber-50 text-amber-700 border border-amber-200'
+                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                        : 'bg-amber-50 text-amber-700 border border-amber-200'
                                         }`}
                                 >
                                     <span className={`w-1.5 h-1.5 rounded-full ${testimonial.visible ? 'bg-emerald-500' : 'bg-amber-500'}`} />
@@ -155,7 +165,7 @@ export default function TestimonialsPage() {
                                     {!testimonial.visible ? (
                                         <button
                                             onClick={() => handleApprove(testimonial.id)}
-                                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition-all"
+                                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all"
                                             title="Approve and Show on Website"
                                         >
                                             <CheckCircle className="w-3.5 h-3.5" />
