@@ -168,7 +168,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-between pb-4 border-b border-white/10">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 rounded-2xl bg-linear-to-tr from-gold to-gold-200 p-0.5 shadow-md flex items-center justify-center">
-                        <img src="../logo.png" alt="Optivis" className="w-9 h-9 object-contain rounded-xl" />
+                        <img src="logo.png" alt="Optivis" className="w-9 h-9 object-contain rounded-xl" />
                       </div>
                       <div>
                         <h3 className="font-serif font-bold text-base text-white">Optivis Tax Advisory</h3>

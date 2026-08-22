@@ -38,7 +38,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <Link to="/" className="inline-flex items-center space-x-3 group">
               <img
-                src="../logo.png"
+                src="logo.png"
                 alt="Optivis"
                 className="w-30 h-30 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform"
               />

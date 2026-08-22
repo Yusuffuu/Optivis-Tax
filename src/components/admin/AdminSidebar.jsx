@@ -60,7 +60,7 @@ export default function AdminSidebar({ isOpen, onClose, collapsed, setCollapsed 
                     {!collapsed ? (
                         <Link to="/admin/dashboard" className="flex items-center space-x-3 group">
                             <img
-                                src="../logo.png"
+                                src="logo.png"
                                 alt="Optivis"
                                 className="w-30 h-30 object-contain drop-shadow-[0_0_15px_rgba(197,162,74,0.4)] group-hover:scale-110 transition-transform"
                             />
@@ -74,7 +74,7 @@ export default function AdminSidebar({ isOpen, onClose, collapsed, setCollapsed 
                     ) : (
                         <Link to="/admin/dashboard" className="mx-auto group" title="Optivis Admin">
                             <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-gold to-gold-200 p-0.5 shadow-md flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <img src="../logo.png" alt="Optivis" className="w-8 h-8 object-contain rounded-lg" />
+                                <img src="logo.png" alt="Optivis" className="w-8 h-8 object-contain rounded-lg" />
                             </div>
                         </Link>
                     )}

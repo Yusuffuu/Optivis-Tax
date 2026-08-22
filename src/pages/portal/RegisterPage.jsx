@@ -48,7 +48,7 @@ export default function RegisterPage() {
                     <div className="text-center mb-6">
                         <Link to="/" className="inline-block mb-3">
                             <div className="w-14 h-14 rounded-2xl bg-linear-to-tr from-gold to-gold-200 p-0.5 shadow-lg mx-auto flex items-center justify-center">
-                                <img src="../logo.png" alt="Optivis Tax" className="w-10 h-10 object-contain" />
+                                <img src="logo.png" alt="Optivis Tax" className="w-10 h-10 object-contain" />
                             </div>
                         </Link>
                         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary">Open Client Account</h1>

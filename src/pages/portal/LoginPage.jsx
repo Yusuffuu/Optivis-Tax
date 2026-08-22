@@ -50,7 +50,7 @@ export default function LoginPage() {
                     <div className="text-center mb-7">
                         <Link to="/" className="inline-block mb-3">
                             <div className="w-16 h-16 rounded-2xl bg-linear-to-tr from-gold to-gold-200 p-0.5 shadow-lg mx-auto flex items-center justify-center">
-                                <img src="../logo.png" alt="Optivis Tax" className="w-12 h-12 object-contain" />
+                                <img src="logo.png" alt="Optivis Tax" className="w-12 h-12 object-contain" />
                             </div>
                         </Link>
                         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary">Client Portal</h1>

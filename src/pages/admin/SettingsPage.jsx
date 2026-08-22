@@ -132,7 +132,7 @@ export default function SettingsPage() {
                                 </label>
                                 <div className="flex items-center space-x-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80">
                                     <img
-                                        src="../logo.png"
+                                        src="logo.png"
                                         alt="Logo"
                                         className="w-20 h-20 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
                                     />
