@@ -84,7 +84,7 @@ export default function Navbar() {
           {/* Brand Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <img
-              src="/logo.png"
+              src="../logo.png"
               alt="Optivis Tax"
               className="w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-2xl drop-shadow-gold/30 group-hover:scale-110 transition-transform"
             />
