@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  CheckCircle, 
-  Globe, 
-  TrendingUp, 
-  Users, 
+import {
+  Shield,
+  CheckCircle,
+  Globe,
+  TrendingUp,
+  Users,
   ArrowRight,
   Star,
   Award,
   Building2
 } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 const services = [
   {
@@ -56,7 +56,7 @@ const stats = [
 export default function HomePage() {
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Home"
         description="Optivis Tax delivers clarity, compliance, and confidence in tax strategy. Leading tax consultancy in Kenya offering international tax advisory, corporate tax planning, and personal tax solutions."
       />
@@ -67,7 +67,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-linear from-primary to-primary-800 opacity-90"></div>
           <div className="absolute inset-0 bg-[url('./hero-pattern.svg')] opacity-10"></div>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -75,12 +75,13 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Logo replaced Shield icon */}
-            <div className="flex justify-center mb-8">
-              <img 
-                src="./logo.png" 
-                alt="Optivis Tax" 
-                className="w-100 h-100 md:w-90 md:h-90 object-contain"
+            {/* Shield/Logo */}
+            <div className="flex justify-center mb-8 relative">
+              <div className="absolute inset-0 bg-gold blur-3xl opacity-20 rounded-full w-40 h-40 mx-auto"></div>
+              <img
+                src="./logo.png"
+                alt="Optivis Tax"
+                className="w-100 h-100 md:w-90 md:h-90 object-contain relative z-10"
               />
             </div>
             <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6">
@@ -90,7 +91,7 @@ export default function HomePage() {
               Clarity. Compliance. Confidence.
             </p>
             <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Your trusted partner for comprehensive tax strategy and solutions. 
+              Your trusted partner for comprehensive tax strategy and solutions.
               Navigating complexity, delivering excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -157,13 +158,14 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                className="glass rounded-xl p-8 card-hover group relative overflow-hidden"
               >
-                <service.icon className="w-12 h-12 text-gold mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-xl font-serif font-bold text-primary mb-4">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary-100 rounded-full mix-blend-multiply filter blur-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                <service.icon className="w-12 h-12 text-gold mb-6 group-hover:scale-110 transition-transform relative z-10" />
+                <h3 className="text-xl font-serif font-bold text-primary mb-4 relative z-10">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-6 relative z-10">
                   {service.description}
                 </p>
                 <Link
@@ -228,33 +230,34 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-primary rounded-2xl p-8 text-white">
-                <h3 className="text-2xl font-serif font-bold mb-6">Our Values</h3>
-                <div className="space-y-6">
+              <div className="glass-dark rounded-2xl p-8 text-white relative overflow-hidden shadow-2xl">
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-gold opacity-20 blur-3xl rounded-full"></div>
+                <h3 className="text-2xl font-serif font-bold mb-6 text-gradient-gold">Our Values</h3>
+                <div className="space-y-6 relative z-10">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gold rounded-full flex items-center justify-center">
-                      <img src="./shield.svg" alt="Integrity" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(11%) sepia(53%) saturate(2102%) hue-rotate(191deg) brightness(34%) contrast(98%)' }} />
+                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
+                      <img src="./shield.svg" alt="Integrity" className="w-6 h-6" style={{ filter: 'invert(67%) sepia(38%) saturate(549%) hue-rotate(7deg) brightness(91%) contrast(87%)' }} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Integrity</h4>
+                      <h4 className="font-semibold text-lg text-gold-200">Integrity</h4>
                       <p className="text-gray-300">Unwavering ethical standards in every engagement</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gold rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-primary" />
+                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
+                      <TrendingUp className="w-6 h-6 text-gold" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Foresight</h4>
+                      <h4 className="font-semibold text-lg text-gold-200">Foresight</h4>
                       <p className="text-gray-300">Anticipating challenges before they arise</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gold rounded-full flex items-center justify-center">
-                      <Award className="w-6 h-6 text-primary" />
+                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
+                      <Award className="w-6 h-6 text-gold" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg">Precision</h4>
+                      <h4 className="font-semibold text-lg text-gold-200">Precision</h4>
                       <p className="text-gray-300">Meticulous attention to detail in all we do</p>
                     </div>
                   </div>

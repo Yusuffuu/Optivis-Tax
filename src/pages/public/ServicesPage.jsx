@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  CheckCircle, 
-  Globe, 
-  TrendingUp, 
+import {
+  Shield,
+  CheckCircle,
+  Globe,
+  TrendingUp,
   Users,
   ArrowRight,
   Phone
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 const services = [
   {
@@ -117,21 +117,25 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Services"
         description="Explore Optivis Tax's comprehensive services including tax advisory, audit support, international tax planning, corporate tax strategy, and personal tax solutions in Kenya."
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-primary">
-        <div className="container-custom">
+      <section className="relative pt-40 pb-32 bg-primary overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-linear-to-br from-primary-900 to-primary opacity-90"></div>
+          <div className="absolute top-1/2 left-0 w-96 h-96 bg-gold blur-3xl opacity-20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-white"
           >
-            <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">Our Services</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-white to-gray-300">Our Services</h1>
+            <p className="text-xl md:text-2xl text-gold-100 max-w-3xl mx-auto italic font-serif">
               Comprehensive tax solutions designed to deliver clarity, compliance, and confidence
             </p>
           </motion.div>
@@ -158,7 +162,7 @@ export default function ServicesPage() {
                 </h2>
                 <p className="text-xl text-gold font-semibold mb-6">{service.subtitle}</p>
                 <p className="text-gray-600 mb-8">{service.description}</p>
-                
+
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-primary mb-4">What We Offer:</h3>
                   <ul className="space-y-3">
@@ -180,16 +184,17 @@ export default function ServicesPage() {
                 initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="bg-primary text-white rounded-2xl p-8"
+                className="glass-dark rounded-2xl p-8 relative overflow-hidden text-white shadow-2xl"
               >
-                <h3 className="text-2xl font-serif font-bold mb-6">Key Benefits</h3>
-                <div className="space-y-6">
+                <div className="absolute -top-12 -right-12 w-32 h-32 bg-gold opacity-20 blur-2xl rounded-full"></div>
+                <h3 className="text-2xl font-serif font-bold mb-6 text-gradient-gold">Key Benefits</h3>
+                <div className="space-y-6 relative z-10">
                   {service.benefits.map((benefit) => (
                     <div key={benefit} className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center flex-0">
-                        <TrendingUp className="w-5 h-5 text-primary" />
+                      <div className="w-10 h-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center flex-0">
+                        <TrendingUp className="w-5 h-5 text-gold" />
                       </div>
-                      <p className="text-gray-100">{benefit}</p>
+                      <p className="text-gray-200">{benefit}</p>
                     </div>
                   ))}
                 </div>

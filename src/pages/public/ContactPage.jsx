@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { Clock } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -18,7 +18,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Contact Us"
         description="Get in touch with Optivis Tax for expert tax advisory services. Office in Nairobi, Kenya. Schedule a consultation today."
       />
@@ -50,7 +50,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-serif font-bold text-primary mb-8">Send Us a Message</h2>
-              
+
               {isSubmitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -68,7 +68,7 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                       <input
                         {...register('name', { required: 'Name is required' })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                         placeholder="John Doe"
                       />
                       {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -76,12 +76,12 @@ export default function ContactPage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                       <input
-                        {...register('email', { 
+                        {...register('email', {
                           required: 'Email is required',
                           pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' }
                         })}
                         type="email"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                         placeholder="john@example.com"
                       />
                       {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -94,7 +94,7 @@ export default function ContactPage() {
                       <input
                         {...register('phone')}
                         type="tel"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                         placeholder="+254 700 000 000"
                       />
                     </div>
@@ -102,7 +102,7 @@ export default function ContactPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
                       <input
                         {...register('company')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                         placeholder="Company name"
                       />
                     </div>
@@ -112,7 +112,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Service Interested In *</label>
                     <select
                       {...register('service', { required: 'Please select a service' })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                     >
                       <option value="">Select a service</option>
                       <option value="advisory">Tax Advisory & Compliance</option>
@@ -130,7 +130,7 @@ export default function ContactPage() {
                     <textarea
                       {...register('message', { required: 'Message is required' })}
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all"
                       placeholder="Tell us about your needs..."
                     />
                     {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
@@ -151,7 +151,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-serif font-bold text-primary mb-8">Get in Touch</h2>
-              
+
               <div className="space-y-8 mb-12">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-0">

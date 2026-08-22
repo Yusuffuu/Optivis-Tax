@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  Target, 
-  Eye, 
-  Heart, 
-  Globe, 
+import {
+  Shield,
+  Target,
+  Eye,
+  Heart,
+  Globe,
   Award,
   Users,
-  TrendingUp 
+  TrendingUp
 } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 const team = [
   {
@@ -73,21 +73,25 @@ const timeline = [
 export default function AboutPage() {
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="About Us"
         description="Learn about Optivis Tax - our mission, vision, and the expert team behind Kenya's leading tax consultancy. Discover our story and commitment to excellence."
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-primary">
-        <div className="container-custom">
+      <section className="relative pt-40 pb-32 bg-primary overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-linear-to-br from-primary-900 to-primary opacity-90"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gold blur-3xl opacity-20 rounded-full translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-white"
           >
-            <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">About Us</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-white to-gray-300">About Us</h1>
+            <p className="text-xl md:text-2xl text-gold-100 max-w-3xl mx-auto italic font-serif">
               Delivering clarity, compliance, and confidence in tax strategy since 2008
             </p>
           </motion.div>
@@ -124,11 +128,12 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className="text-center p-8"
+                className="glass rounded-2xl text-center p-8 card-hover relative overflow-hidden group"
               >
-                <item.icon className={`w-16 h-16 ${item.color} mx-auto mb-6`} />
-                <h2 className="text-2xl font-serif font-bold text-primary mb-4">{item.title}</h2>
-                <p className="text-gray-600">{item.description}</p>
+                <div className="absolute inset-0 bg-linear-to-b from-transparent to-primary-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <item.icon className={`w-16 h-16 ${item.color} mx-auto mb-6 relative z-10 group-hover:scale-110 transition-transform`} />
+                <h2 className="text-2xl font-serif font-bold text-primary mb-4 relative z-10">{item.title}</h2>
+                <p className="text-gray-600 relative z-10">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -156,16 +161,17 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
+                className="glass rounded-xl overflow-hidden card-hover group"
               >
-                <div className="h-64 bg-primary-100 flex items-center justify-center">
-                  <Users className="w-20 h-20 text-primary-300" />
+                <div className="h-64 bg-primary-50 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <Users className="w-20 h-20 text-primary-200 group-hover:scale-110 transition-transform duration-500" />
                 </div>
-                <div className="p-6">
+                <div className="p-6 relative bg-white/50 backdrop-blur-sm">
                   <h3 className="text-xl font-serif font-bold text-primary mb-1">{member.name}</h3>
                   <p className="text-gold font-semibold mb-2">{member.role}</p>
-                  <p className="text-sm text-gray-500 mb-3">{member.credentials}</p>
-                  <p className="text-gray-600">{member.bio}</p>
+                  <p className="text-sm text-primary-400 mb-3 font-medium">{member.credentials}</p>
+                  <p className="text-gray-600 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">{member.bio}</p>
                 </div>
               </motion.div>
             ))}
@@ -195,9 +201,8 @@ export default function AboutPage() {
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className={`flex flex-col md:flex-row items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
+                  className={`flex flex-col md:flex-row items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                    }`}
                 >
                   <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'}`}>
                     <h3 className="text-2xl font-serif font-bold text-primary">{item.year}</h3>

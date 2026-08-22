@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Calendar, 
-  User, 
+import {
+  Search,
+  Calendar,
+  User,
   ArrowRight,
   TrendingUp,
   Globe,
   FileText
 } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 const blogPosts = [
   {
@@ -99,7 +99,7 @@ export default function BlogPage() {
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -108,7 +108,7 @@ export default function BlogPage() {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Insights & Blog"
         description="Stay informed with the latest tax insights, Kenyan tax updates, global tax trends, and practical guides from Optivis Tax experts."
       />
@@ -168,7 +168,7 @@ export default function BlogPage() {
                         {post.date}
                       </div>
                     </div>
-                    <Link 
+                    <Link
                       to={`/insights/${post.slug}`}
                       className="text-gold hover:text-gold-600 font-semibold flex items-center"
                     >
@@ -197,7 +197,7 @@ export default function BlogPage() {
                     placeholder="Search articles..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                   />
                 </div>
 
@@ -207,11 +207,10 @@ export default function BlogPage() {
                   <div className="space-y-2">
                     <button
                       onClick={() => setSelectedCategory('All')}
-                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                        selectedCategory === 'All' 
-                          ? 'bg-primary text-white' 
-                          : 'hover:bg-gray-50 text-gray-700'
-                      }`}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${selectedCategory === 'All'
+                        ? 'bg-primary text-white'
+                        : 'hover:bg-gray-50 text-gray-700'
+                        }`}
                     >
                       All Articles ({blogPosts.length})
                     </button>
@@ -219,11 +218,10 @@ export default function BlogPage() {
                       <button
                         key={category.name}
                         onClick={() => setSelectedCategory(category.name)}
-                        className={`w-full text-left px-4 py-2 rounded-lg flex items-center justify-between transition-colors ${
-                          selectedCategory === category.name 
-                            ? 'bg-primary text-white' 
-                            : 'hover:bg-gray-50 text-gray-700'
-                        }`}
+                        className={`w-full text-left px-4 py-2 rounded-lg flex items-center justify-between transition-colors ${selectedCategory === category.name
+                          ? 'bg-primary text-white'
+                          : 'hover:bg-gray-50 text-gray-700'
+                          }`}
                       >
                         <span className="flex items-center">
                           <category.icon className="w-4 h-4 mr-2" />
@@ -244,7 +242,7 @@ export default function BlogPage() {
                   <input
                     type="email"
                     placeholder="Your email"
-                    className="w-full px-4 py-2 bg-primary-700 border border-primary-400 rounded-lg focus:outline-none focus:border-gold text-white placeholder-gray-400 mb-3"
+                    className="w-full px-4 py-2 bg-primary-700 border border-primary-400 rounded-lg focus:outline-none focus:border-gold text-white mb-3"
                   />
                   <button className="btn-secondary w-full text-sm">
                     Subscribe

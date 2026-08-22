@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 // This would typically come from an API or CMS
 const blogContent = {
@@ -86,7 +86,7 @@ export default function BlogPostPage() {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title={post.title}
         description={post.content.replace(/<[^>]*>/g, '').substring(0, 160)}
         ogUrl={`https://optivistax.com/insights/${slug}`}

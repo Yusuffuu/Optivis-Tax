@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { 
-  Lock, 
-  Shield, 
-  FileText, 
-  TrendingUp, 
-  Bell, 
+import {
+  Lock,
+  Shield,
+  FileText,
+  TrendingUp,
+  Bell,
   Eye,
   EyeOff,
   ArrowRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import SEOHead from '../components/SEOHead';
+import SEOHead from '../../components/seo/SEOHead';
 
 export default function ClientPortal() {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +48,7 @@ export default function ClientPortal() {
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Client Portal"
         description="Secure client portal for Optivis Tax clients. Access your personalized dashboard, share documents, and track your tax matters."
       />
