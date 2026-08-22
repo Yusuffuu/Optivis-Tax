@@ -105,8 +105,8 @@ export default function LoginPage() {
                     <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                         <p className="text-xs text-gray-500 text-center">Demo Credentials:</p>
                         <p className="text-xs text-gray-500 text-center mt-1">
-                            Client: client@optivistax.com / client123<br />
-                            Admin: admin@optivistax.com / admin123
+                            Client: client@optivistax.com / password123<br />
+                            Admin: admin@optivistax.com / password123
                         </p>
                     </div>
                 </motion.div>
