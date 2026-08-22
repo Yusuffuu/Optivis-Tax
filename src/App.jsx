@@ -43,7 +43,7 @@ function App() {
   return (
     <HelmetProvider>
       <AuthProvider>
-        <Router basename="/">
+        <Router basename="/Optivis-Tax">
           <ScrollToTop />
           <AnimatePresence mode="wait">
             <Routes>
