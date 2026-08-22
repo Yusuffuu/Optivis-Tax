@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Shield,
@@ -6,7 +7,12 @@ import {
   TrendingUp,
   Users,
   ArrowRight,
-  Phone
+  Phone,
+  Lock,
+  Tag,
+  Sparkles,
+  Award,
+  ChevronRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../../components/seo/SEOHead';
@@ -15,214 +21,292 @@ const services = [
   {
     id: 'advisory',
     icon: Shield,
-    title: 'Tax Advisory & Compliance',
-    subtitle: 'Navigate complexity with confidence',
-    description: 'Our comprehensive tax advisory services ensure your business remains compliant while optimizing your tax position. We stay ahead of regulatory changes to provide proactive guidance.',
-    features: [
-      'Tax compliance review and filing',
-      'Regulatory change impact analysis',
-      'Tax risk assessment and management',
-      'VAT and indirect tax advisory',
-      'Tax health checks and due diligence'
+    title: 'Tax Advisory & Statutory Compliance',
+    subtitle: 'Ensure airtight statutory compliance and minimize liabilities',
+    tag: 'Compliance Practice',
+    basePrice: '45,000',
+    description: 'Comprehensive tax compliance reviews, statutory corporate tax returns, monthly VAT & withholding returns, PAYE payroll compliance, and proactive regulatory risk analysis for entities operating in Kenya.',
+    deliverables: [
+      'Corporate Income Tax (CIT) Annual Computations & Filings',
+      'Monthly VAT & Withholding Tax (WHT) Reconciliations',
+      'PAYE Payroll Tax Audit & Remittance Checks',
+      'Statutory Tax Health Checks & Due Diligence Dossiers',
+      'Finance Act Legislative Impact Assessment'
     ],
     benefits: [
-      'Reduced compliance risks',
-      'Optimized tax positions',
-      'Proactive regulatory updates',
-      'Peace of mind'
+      'Eliminate late statutory filing penalties & KRA interest',
+      'Maximize allowable business deductions and tax credits',
+      'Proactive regulatory alerts on Kenyan tax amendments'
     ]
   },
   {
     id: 'audit',
     icon: CheckCircle,
-    title: 'Audit Support',
-    subtitle: 'Expert representation when you need it most',
-    description: 'Facing a tax audit can be daunting. Our experienced team provides comprehensive support throughout the audit process, protecting your interests and ensuring fair treatment.',
-    features: [
-      'Pre-audit preparation and review',
-      'Audit representation and negotiation',
-      'Documentation and evidence gathering',
-      'Dispute resolution and appeals',
-      'Post-audit recommendations'
+    title: 'Audit Support & Dispute Defense',
+    subtitle: 'Strategic representation during KRA compliance reviews',
+    tag: 'Dispute Resolution',
+    basePrice: '75,000',
+    description: 'Seasoned defense representation and documentation gathering for KRA comprehensive audits, desk reviews, additional assessments, objection letters, and representation before the Tax Appeals Tribunal (TAT).',
+    deliverables: [
+      'Pre-Audit Risk Diagnostic & Documentation Review',
+      'Direct Representation & Defense Meetings with KRA Officers',
+      'Preparation of Formal Objection Memorandums',
+      'Tax Appeals Tribunal (TAT) Dossier Preparation',
+      'Post-Audit Settlement Negotiations & Payment Plans'
     ],
     benefits: [
-      'Professional representation',
-      'Minimized penalties',
-      'Efficient resolution',
-      'Future audit preparedness'
+      'Shield corporate directors from arbitrary assessments',
+      'Negotiate fair statutory compromises and penalty waivers',
+      'Expert representation by certified tax litigators'
     ]
   },
   {
     id: 'international',
     icon: Globe,
-    title: 'International Tax Planning',
-    subtitle: 'Strategic cross-border solutions',
-    description: 'Navigate the complexities of international taxation with our expert guidance. We help businesses and individuals optimize their global tax positions while ensuring full compliance.',
-    features: [
-      'Cross-border transaction planning',
-      'Transfer pricing advisory',
-      'Tax treaty analysis and application',
-      'Expatriate tax planning',
-      'International structuring'
+    title: 'International Tax & Cross-Border Structuring',
+    tag: 'Cross-Border Practice',
+    basePrice: '90,000',
+    description: 'Expert cross-border tax structuring, transfer pricing documentation, Double Taxation Agreement (DTA) optimization, regional East African Community (EAC) trade structuring, and expatriate tax planning.',
+    deliverables: [
+      'Local File & Master File Transfer Pricing Documentation',
+      'Double Tax Avoidance Agreement (DTA) Structuring',
+      'Cross-Border Management Fees & Royalty Optimization',
+      'EAC Customs & Common Market Protocol Structuring',
+      'Expatriate Inbound & Outbound Tax Management'
     ],
     benefits: [
-      'Global tax optimization',
-      'Double taxation avoidance',
-      'Compliant international operations',
-      'Strategic market entry'
+      'Mitigate international transfer pricing audit exposure',
+      'Eliminate double taxation on cross-border revenue flows',
+      'Tax-efficient holding company and regional branch structures'
     ]
   },
   {
     id: 'corporate',
     icon: TrendingUp,
-    title: 'Corporate Tax Strategy',
-    subtitle: 'Maximize value, minimize liability',
-    description: 'Develop and implement tax strategies that align with your business objectives. We help corporations of all sizes optimize their tax positions while maintaining full compliance.',
-    features: [
-      'Corporate tax planning and structuring',
-      'M&A tax advisory',
-      'Group restructuring',
-      'Tax incentive optimization',
-      'Shareholder tax planning'
+    title: 'Corporate Tax Strategy & Transaction Advisory',
+    tag: 'Transactions & M&A',
+    basePrice: '80,000',
+    description: 'Comprehensive tax due diligence for mergers, acquisitions, equity investments, corporate restructuring, capital allowances optimization, and shareholder exit planning.',
+    deliverables: [
+      'Buy-Side & Sell-Side Tax Due Diligence Reviews',
+      'Pre- & Post-Acquisition Group Tax Structuring',
+      'Industrial Building & Capital Allowances Maximization',
+      'Share vs. Asset Purchase Tax Optimization',
+      'Corporate Reorganization & Spin-Off Planning'
     ],
     benefits: [
-      'Enhanced shareholder value',
-      'Reduced effective tax rate',
-      'Strategic business alignment',
-      'Competitive advantage'
+      'Uncover hidden historical tax liabilities before deals close',
+      'Maximize post-acquisition cash flow through tax depreciation',
+      'Structure transactions to minimize capital gains exposure'
     ]
   },
   {
     id: 'personal',
     icon: Users,
-    title: 'Personal Tax Solutions',
-    subtitle: 'Tailored strategies for individuals',
-    description: 'Comprehensive tax planning for high-net-worth individuals, professionals, and expatriates. We help you preserve and grow your wealth through smart tax strategies.',
-    features: [
-      'Personal income tax planning',
-      'Investment tax optimization',
-      'Estate and succession planning',
-      'Expatriate tax services',
-      'Retirement planning'
+    title: 'Executive & Private Wealth Solutions',
+    tag: 'Private Clients',
+    basePrice: '35,000',
+    description: 'Tailored tax advisory for business founders, high-net-worth families, company directors, and expatriate executives, encompassing wealth preservation and succession planning.',
+    deliverables: [
+      'Personal Income Tax (PIT) Strategy & Annual Returns',
+      'Family Business Succession & Trust Tax Structuring',
+      'Executive Remuneration & Employee Share Schemes (ESOPs)',
+      'Real Estate & Capital Asset Disposal Structuring',
+      'Foreign Asset Declaration & Repatriation Counsel'
     ],
     benefits: [
-      'Wealth preservation',
-      'Tax-efficient investments',
-      'Future security',
-      'Family legacy planning'
+      'Safeguard generational wealth from excessive tax erosion',
+      'Ensure 100% compliance with domestic asset reporting',
+      'Bespoke, strictly confidential partner-level advisory'
     ]
   }
 ];
 
 export default function ServicesPage() {
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const filteredServices = activeFilter === 'all'
+    ? services
+    : services.filter(s => s.id === activeFilter);
+
   return (
     <>
       <SEOHead
-        title="Services"
-        description="Explore Optivis Tax's comprehensive services including tax advisory, audit support, international tax planning, corporate tax strategy, and personal tax solutions in Kenya."
+        title="Tax Advisory & Compliance Services | Optivis Tax Kenya"
+        description="Explore Optivis Tax's comprehensive services including corporate tax compliance, KRA audit defense, transfer pricing, and international tax planning in Kenya."
       />
 
-      {/* Hero */}
-      <section className="relative pt-40 pb-32 bg-primary overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-linear-to-br from-primary-900 to-primary opacity-90"></div>
-          <div className="absolute top-1/2 left-0 w-96 h-96 bg-gold blur-3xl opacity-20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-        </div>
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center text-white"
-          >
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-white to-gray-300">Our Services</h1>
-            <p className="text-xl md:text-2xl text-gold-100 max-w-3xl mx-auto italic font-serif">
-              Comprehensive tax solutions designed to deliver clarity, compliance, and confidence
-            </p>
-          </motion.div>
+      {/* Hero Section */}
+      <section className="relative pt-36 pb-24 bg-linear-to-b from-[#041129] via-[#0A2A66] to-[#041129] text-white overflow-hidden">
+        <div className="absolute top-1/4 -left-40 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-gold/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md">
+            <Shield className="w-3.5 h-3.5 text-gold" />
+            <span className="text-xs font-semibold tracking-wide text-gold-200">
+              Specialized Practice Solutions
+            </span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight">
+            Strategic Practice Solutions <br />
+            <span className="text-gradient-gold">Engineered for Maximum Efficiency</span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto font-sans leading-relaxed">
+            Delivering statutory certainty, strategic deduction optimization, and vigorous audit protection for corporations and private clients.
+          </p>
+
+          {/* Quick Anchor Filter */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-6">
+            <button
+              onClick={() => setActiveFilter('all')}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeFilter === 'all'
+                  ? 'bg-gold text-[#0A2A66] shadow-md font-bold'
+                  : 'bg-white/10 hover:bg-white/15 text-slate-200 border border-white/10'
+                }`}
+            >
+              All Practice Areas
+            </button>
+            {services.map(s => (
+              <button
+                key={s.id}
+                onClick={() => setActiveFilter(s.id)}
+                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeFilter === s.id
+                    ? 'bg-gold text-[#0A2A66] shadow-md font-bold'
+                    : 'bg-white/10 hover:bg-white/15 text-slate-200 border border-white/10'
+                  }`}
+              >
+                {s.title.split('&')[0].trim()}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Services Detail */}
-      {services.map((service, index) => (
-        <section
-          key={service.id}
-          id={service.id}
-          className={`section-padding ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
-        >
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <service.icon className="w-16 h-16 text-gold mb-6" />
-                <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-3">
-                  {service.title}
-                </h2>
-                <p className="text-xl text-gold font-semibold mb-6">{service.subtitle}</p>
-                <p className="text-gray-600 mb-8">{service.description}</p>
-
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-primary mb-4">What We Offer:</h3>
-                  <ul className="space-y-3">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="flex items-center space-x-3">
-                        <CheckCircle className="w-5 h-5 text-gold flex-0" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <Link to="/contact" className="btn-primary inline-flex items-center">
-                  Get Started <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="glass-dark rounded-2xl p-8 relative overflow-hidden text-white shadow-2xl"
-              >
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-gold opacity-20 blur-2xl rounded-full"></div>
-                <h3 className="text-2xl font-serif font-bold mb-6 text-gradient-gold">Key Benefits</h3>
-                <div className="space-y-6 relative z-10">
-                  {service.benefits.map((benefit) => (
-                    <div key={benefit} className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center flex-0">
-                        <TrendingUp className="w-5 h-5 text-gold" />
-                      </div>
-                      <p className="text-gray-200">{benefit}</p>
+      {/* Services List Section */}
+      <section className="py-20 bg-slate-50 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {filteredServices.map((service, index) => (
+            <motion.div
+              key={service.id}
+              id={service.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-xs hover:shadow-xl transition-all"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Left 7 cols: Service Description & Deliverables */}
+                <div className="lg:col-span-7 space-y-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 rounded-2xl bg-linear-to-tr from-primary-50 to-primary-100 text-primary border border-primary-200/50 flex items-center justify-center shadow-xs shrink-0">
+                      <service.icon className="w-6 h-6 text-primary" />
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      ))}
+                    <div>
+                      <span className="text-[11px] font-semibold text-gold bg-gold/10 px-2.5 py-0.5 rounded-full border border-gold/20">
+                        {service.tag}
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-serif font-bold text-primary mt-1">
+                        {service.title}
+                      </h2>
+                    </div>
+                  </div>
 
-      {/* CTA */}
-      <section className="section-padding bg-primary">
-        <div className="container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Contact us today for a consultation and discover how we can help optimize your tax strategy.
-            </p>
-            <Link to="/contact" className="btn-secondary text-lg inline-flex items-center">
-              <Phone className="mr-2 w-5 h-5" />
-              Schedule Consultation
+                  <p className="text-sm font-semibold text-slate-700 font-serif italic">
+                    {service.subtitle}
+                  </p>
+
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                    {service.description}
+                  </p>
+
+                  {/* Scope Checklist */}
+                  <div className="pt-3 space-y-2.5">
+                    <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500">
+                      Key Deliverables & Scope
+                    </h4>
+                    <div className="space-y-2">
+                      {service.deliverables.map((item, i) => (
+                        <div key={i} className="flex items-start space-x-2.5 text-xs text-slate-700">
+                          <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right 5 cols: Strategic Value Card & Retainer CTA */}
+                <div className="lg:col-span-5 bg-linear-to-br from-[#0A2A66] via-[#082252] to-[#041129] rounded-2xl p-6 sm:p-7 text-white space-y-5 shadow-lg border border-white/10">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-gold font-bold block mb-1">
+                      Engagement Pricing
+                    </span>
+                    <div className="flex items-baseline space-x-2">
+                      <span className="text-xs text-slate-300">From</span>
+                      <span className="text-2xl font-serif font-bold text-white">
+                        KSh {service.basePrice}
+                      </span>
+                      <span className="text-[11px] text-slate-400">/ engagement</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-3 border-t border-white/10">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-gold font-bold block">
+                      Strategic Benefits
+                    </span>
+                    {service.benefits.map((b, i) => (
+                      <div key={i} className="flex items-start space-x-2 text-xs text-slate-200">
+                        <Sparkles className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
+                        <span>{b}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 space-y-2">
+                    <Link
+                      to="/contact"
+                      className="w-full py-3 bg-linear-to-r from-gold via-gold-300 to-gold text-[#0A2A66] font-bold text-xs rounded-xl shadow-md hover:scale-102 transition-all active:scale-95 flex items-center justify-center space-x-1.5"
+                    >
+                      <span>Inquire About This Service</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+
+                    <Link
+                      to="/portal/services"
+                      className="w-full py-2.5 bg-white/10 hover:bg-white/15 text-white font-semibold text-xs rounded-xl border border-white/15 transition-colors flex items-center justify-center space-x-1.5"
+                    >
+                      <Lock className="w-3 h-3 text-gold" />
+                      <span>Request via Client Portal</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-linear-to-r from-[#0A2A66] via-[#0D3685] to-[#041129] text-white text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+            Need a Customized Advisory Solution?
+          </h2>
+          <p className="text-xs sm:text-base text-slate-200 max-w-xl mx-auto leading-relaxed">
+            Our senior tax partners are ready to review your entity structure, cross-border flows, or statutory matters in strict confidence.
+          </p>
+          <div className="pt-2">
+            <Link
+              to="/contact"
+              className="inline-flex items-center space-x-2 px-8 py-3.5 bg-linear-to-r from-gold to-gold-300 text-primary font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:scale-102 transition-all active:scale-95"
+            >
+              <span>Schedule Discovery Consultation</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
     </>

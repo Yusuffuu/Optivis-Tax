@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Shield,
     CheckCircle,
@@ -8,10 +8,12 @@ import {
     Users,
     FileText,
     Briefcase,
-    Menu,
-    Search
+    Search,
+    Tag,
+    ArrowRight,
+    Sparkles
 } from 'lucide-react';
-import PortalSidebar from '../../components/portal/PortalSidebar';
+import PortalLayout from '../../components/portal/PortalLayout';
 import RequestServiceModal from '../../components/portal/RequestServiceModal';
 import { mockServices } from '../../data/mockData';
 
@@ -26,7 +28,6 @@ const iconMap = {
 };
 
 export default function ServicesPage() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -34,94 +35,99 @@ export default function ServicesPage() {
     const categories = ['All', ...new Set(mockServices.map(s => s.category))];
 
     const filteredServices = mockServices.filter(service => {
-        const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        const matchesSearch =
+            service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             service.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === 'All' || service.category === selectedCategory;
         return matchesSearch && matchesCategory && service.active;
     });
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <PortalSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-            <div className="lg:pl-64">
-                {/* Top bar */}
-                <div className="bg-white border-b sticky top-0 z-30">
-                    <div className="px-6 py-4">
-                        <div className="flex items-center justify-between">
-                            <button
-                                onClick={() => setSidebarOpen(true)}
-                                className="lg:hidden text-gray-600"
-                            >
-                                <Menu className="w-6 h-6" />
-                            </button>
-                            <h1 className="text-2xl font-serif font-bold text-primary">Request a Service</h1>
-                        </div>
-                    </div>
+        <PortalLayout
+            title="Tax & Advisory Services"
+            subtitle="Select a practice area or tailored tax compliance solution to submit a request"
+        >
+            {/* Search & Category Filter */}
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="relative flex-1 max-w-sm">
+                    <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+                    <input
+                        type="text"
+                        placeholder="Search tax solutions..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                    />
                 </div>
 
-                <div className="p-6">
-                    {/* Search and Filter */}
-                    <div className="mb-8 space-y-4">
-                        <div className="relative max-w-md">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                type="text"
-                                placeholder="Search services..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                            />
-                        </div>
+                <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto custom-scrollbar">
+                    {categories.map((category) => (
+                        <button
+                            key={category}
+                            onClick={() => setSelectedCategory(category)}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${selectedCategory === category
+                                    ? 'bg-primary text-white shadow-xs'
+                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                                }`}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
+            </div>
 
-                        <div className="flex flex-wrap gap-2">
-                            {categories.map(category => (
-                                <button
-                                    key={category}
-                                    onClick={() => setSelectedCategory(category)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === category
-                                            ? 'bg-primary text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-100'
-                                        }`}
-                                >
-                                    {category}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Services Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredServices.map((service, index) => {
-                            const Icon = iconMap[service.icon] || Briefcase;
-                            return (
-                                <motion.div
-                                    key={service.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
-                                >
-                                    <Icon className="w-12 h-12 text-gold mb-4" />
-                                    <h3 className="text-lg font-serif font-bold text-primary mb-2">{service.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                                    <div className="mb-4">
-                                        <p className="text-sm text-gray-500">Starting from</p>
-                                        <p className="text-2xl font-bold text-primary">
-                                            KSh {service.basePrice?.toLocaleString()}
-                                        </p>
+            {/* Services Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredServices.map((service, index) => {
+                    const Icon = iconMap[service.icon] || Briefcase;
+                    return (
+                        <motion.div
+                            key={service.id}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className="bg-white rounded-2xl p-6 shadow-xs border border-slate-200/80 hover:shadow-md hover:border-gold/40 transition-all duration-200 flex flex-col justify-between group"
+                        >
+                            <div>
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="w-12 h-12 rounded-2xl bg-linear-to-tr from-primary-50 to-primary-100 text-primary border border-primary-200/40 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                                        <Icon className="w-6 h-6 text-primary" />
                                     </div>
-                                    <button
-                                        onClick={() => setSelectedService(service)}
-                                        className="btn-primary w-full text-sm"
-                                    >
-                                        Request This Service
-                                    </button>
-                                </motion.div>
-                            );
-                        })}
-                    </div>
-                </div>
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-gold bg-gold/10 px-2.5 py-0.5 rounded-full">
+                                        <Tag className="w-3 h-3" />
+                                        {service.category}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-base font-serif font-bold text-primary mb-2 line-clamp-1">
+                                    {service.title}
+                                </h3>
+                                <p className="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-4">
+                                    {service.description}
+                                </p>
+                            </div>
+
+                            <div className="pt-4 border-t border-slate-100">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div>
+                                        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">From</span>
+                                        <span className="text-lg font-bold font-serif text-primary">
+                                            KSh {service.basePrice?.toLocaleString()}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setSelectedService(service)}
+                                    className="w-full py-2.5 px-4 bg-linear-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all active:scale-95 flex items-center justify-center space-x-1.5"
+                                >
+                                    <span>Request Engagement</span>
+                                    <ArrowRight className="w-3.5 h-3.5 text-gold" />
+                                </button>
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </div>
 
             {/* Request Modal */}
@@ -130,6 +136,6 @@ export default function ServicesPage() {
                 onClose={() => setSelectedService(null)}
                 service={selectedService}
             />
-        </div>
+        </PortalLayout>
     );
 }

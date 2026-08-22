@@ -1,224 +1,282 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Menu,
     User,
     Lock,
     Bell,
     Shield,
     Save,
-    CheckCircle
+    CheckCircle,
+    Building2,
+    Mail,
+    Phone
 } from 'lucide-react';
-import PortalSidebar from '../../components/portal/PortalSidebar';
+import PortalLayout from '../../components/portal/PortalLayout';
 import { useAuth } from '../../context/AuthContext';
 import { useForm } from 'react-hook-form';
 
-export default function SettingsPage() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function PortalSettingsPage() {
     const [activeTab, setActiveTab] = useState('profile');
     const [saved, setSaved] = useState(false);
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            fullName: user?.fullName || '',
-            email: user?.email || '',
-            phone: user?.phone || '',
-            company: user?.company || ''
+            fullName: user?.fullName || 'John Doe',
+            email: user?.email || 'client@example.com',
+            phone: user?.phone || '+254 712 345 678',
+            company: user?.company || 'Acme Enterprises Ltd'
         }
     });
 
     const tabs = [
-        { id: 'profile', name: 'Profile', icon: User },
-        { id: 'password', name: 'Password', icon: Lock },
-        { id: 'notifications', name: 'Notifications', icon: Bell },
-        { id: 'security', name: 'Security', icon: Shield },
+        { id: 'profile', name: 'Profile Details', icon: User },
+        { id: 'password', name: 'Password & Auth', icon: Lock },
+        { id: 'notifications', name: 'Alert Preferences', icon: Bell },
+        { id: 'security', name: 'Account Security', icon: Shield },
     ];
 
     const onSubmit = (data) => {
-        console.log('Settings saved:', data);
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <PortalSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-            <div className="lg:pl-64">
-                {/* Top bar */}
-                <div className="bg-white border-b sticky top-0 z-30">
-                    <div className="px-6 py-4">
-                        <div className="flex items-center justify-between">
+        <PortalLayout
+            title="Account & Security Settings"
+            subtitle="Manage your personal profile, company details, login credentials, and notification settings"
+        >
+            <div className="max-w-4xl">
+                {/* Tabs Switcher */}
+                <div className="flex space-x-2 pb-2 mb-6 overflow-x-auto custom-scrollbar">
+                    {tabs.map((tab) => {
+                        const isActive = activeTab === tab.id;
+                        return (
                             <button
-                                onClick={() => setSidebarOpen(true)}
-                                className="lg:hidden text-gray-600"
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${isActive
+                                        ? 'bg-primary text-white shadow-xs'
+                                        : 'bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50'
+                                    }`}
                             >
-                                <Menu className="w-6 h-6" />
+                                <tab.icon className={`w-4 h-4 ${isActive ? 'text-gold' : 'text-slate-400'}`} />
+                                <span>{tab.name}</span>
                             </button>
-                            <h1 className="text-2xl font-serif font-bold text-primary">Settings</h1>
-                        </div>
-                    </div>
+                        );
+                    })}
                 </div>
 
-                <div className="p-6">
-                    <div className="max-w-4xl mx-auto">
-                        {/* Tabs */}
-                        <div className="flex space-x-4 mb-8 overflow-x-auto">
-                            {tabs.map((tab) => (
+                {/* Save Feedback Alert */}
+                <AnimatePresence>
+                    {saved && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl mb-6 flex items-center space-x-2.5 shadow-xs"
+                        >
+                            <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                            <span className="text-xs sm:text-sm font-semibold">Account preferences updated successfully!</span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Tab 1: Profile */}
+                {activeTab === 'profile' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-6 sm:p-8"
+                    >
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                            <h3 className="text-base font-serif font-bold text-primary pb-3 border-b border-slate-100">
+                                Client Identity & Entity Info
+                            </h3>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                        Full Name *
+                                    </label>
+                                    <input
+                                        {...register('fullName', { required: 'Full name is required' })}
+                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                                    />
+                                    {errors.fullName && <p className="text-rose-500 text-xs mt-1">{errors.fullName.message}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                        Email Address *
+                                    </label>
+                                    <input
+                                        {...register('email', { required: 'Email is required' })}
+                                        type="email"
+                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                                    />
+                                    {errors.email && <p className="text-rose-500 text-xs mt-1">{errors.email.message}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                        Phone / Mobile
+                                    </label>
+                                    <input
+                                        {...register('phone')}
+                                        type="tel"
+                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                        Company / Entity Name
+                                    </label>
+                                    <input
+                                        {...register('company')}
+                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="pt-4 border-t border-slate-100">
                                 <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
-                                        ? 'bg-primary text-white'
-                                        : 'bg-white text-gray-700 hover:bg-gray-100'
-                                        }`}
+                                    type="submit"
+                                    className="inline-flex items-center space-x-1.5 px-5 py-2.5 bg-linear-to-r from-primary to-primary-600 text-white rounded-xl text-xs font-bold hover:from-primary-600 hover:to-primary-700 shadow-xs transition-all"
                                 >
-                                    <tab.icon className="w-4 h-4" />
-                                    <span>{tab.name}</span>
+                                    <Save className="w-4 h-4 text-gold" />
+                                    <span>Save Profile</span>
                                 </button>
+                            </div>
+                        </form>
+                    </motion.div>
+                )}
+
+                {/* Tab 2: Password */}
+                {activeTab === 'password' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-6 sm:p-8 max-w-lg"
+                    >
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                            <h3 className="text-base font-serif font-bold text-primary pb-3 border-b border-slate-100 mb-4">
+                                Update Password
+                            </h3>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                    Current Password
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="••••••••"
+                                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                    New Password
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="••••••••"
+                                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                    Confirm New Password
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="••••••••"
+                                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-600 transition-colors shadow-xs"
+                            >
+                                Change Password
+                            </button>
+                        </form>
+                    </motion.div>
+                )}
+
+                {/* Tab 3: Notifications */}
+                {activeTab === 'notifications' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-6 sm:p-8"
+                    >
+                        <h3 className="text-base font-serif font-bold text-primary pb-3 border-b border-slate-100 mb-5">
+                            Client Portal Notification Preferences
+                        </h3>
+
+                        <div className="space-y-3 mb-6">
+                            {[
+                                { title: 'Service Request Status Changes', desc: 'Receive instant email/push notifications when your tax filing progresses to a new stage.' },
+                                { title: 'Specialist Direct Messages', desc: 'Get alerted when your assigned tax specialist replies to your advisory inquiries.' },
+                                { title: 'Statutory Tax Deadlines', desc: 'Upcoming monthly VAT, PAYE, and annual return filing reminders from Optivis.' },
+                                { title: 'Monthly Tax Insights & Bulletins', desc: 'Receive our curated executive tax legislative digest.' }
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors">
+                                    <div>
+                                        <p className="text-xs font-semibold text-slate-800">{item.title}</p>
+                                        <p className="text-[11px] text-slate-500 mt-0.5">{item.desc}</p>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer shrink-0 ml-4">
+                                        <input type="checkbox" className="sr-only peer" defaultChecked />
+                                        <div className="w-10 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                                    </label>
+                                </div>
                             ))}
                         </div>
 
-                        {/* Content */}
-                        <motion.div
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                        <button
+                            onClick={() => {
+                                setSaved(true);
+                                setTimeout(() => setSaved(false), 3000);
+                            }}
+                            className="inline-flex items-center space-x-1.5 px-5 py-2.5 bg-linear-to-r from-primary to-primary-600 text-white rounded-xl text-xs font-bold hover:from-primary-600 hover:to-primary-700 shadow-xs transition-all"
                         >
-                            {saved && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center space-x-2"
-                                >
-                                    <CheckCircle className="w-5 h-5" />
-                                    <span>Settings saved successfully!</span>
-                                </motion.div>
-                            )}
+                            <Save className="w-4 h-4 text-gold" />
+                            <span>Save Preferences</span>
+                        </button>
+                    </motion.div>
+                )}
 
-                            {activeTab === 'profile' && (
-                                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                            <input
-                                                {...register('fullName', { required: 'Full name is required' })}
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                            />
-                                            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                            <input
-                                                {...register('email', { required: 'Email is required' })}
-                                                type="email"
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                            />
-                                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                                        </div>
-                                    </div>
+                {/* Tab 4: Security */}
+                {activeTab === 'security' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-6 sm:p-8 space-y-6"
+                    >
+                        <h3 className="text-base font-serif font-bold text-primary pb-3 border-b border-slate-100">
+                            Security & Authentications
+                        </h3>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                            <input
-                                                {...register('phone')}
-                                                type="tel"
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
-                                            <input
-                                                {...register('company')}
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <button type="submit" className="btn-primary flex items-center">
-                                        <Save className="w-4 h-4 mr-2" />
-                                        Save Changes
-                                    </button>
-                                </form>
-                            )}
-
-                            {activeTab === 'password' && (
-                                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
-                                        <input
-                                            type="password"
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                                        <input
-                                            type="password"
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
-                                        <input
-                                            type="password"
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                                        />
-                                    </div>
-                                    <button type="submit" className="btn-primary">
-                                        Update Password
-                                    </button>
-                                </form>
-                            )}
-
-                            {activeTab === 'notifications' && (
-                                <div className="space-y-4">
-                                    <h3 className="text-lg font-serif font-bold text-primary mb-4">Notification Preferences</h3>
-                                    {[
-                                        { label: 'Service request updates', description: 'Get notified when your request status changes' },
-                                        { label: 'New messages', description: 'Receive notifications for new chat messages' },
-                                        { label: 'Newsletter', description: 'Subscribe to our monthly newsletter' },
-                                        { label: 'Tax deadlines', description: 'Reminders for upcoming tax deadlines' },
-                                    ].map((item) => (
-                                        <div key={item.label} className="flex items-center justify-between p-4 border rounded-lg">
-                                            <div>
-                                                <p className="font-medium text-primary">{item.label}</p>
-                                                <p className="text-sm text-gray-500">{item.description}</p>
-                                            </div>
-                                            <label className="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" className="sr-only peer" defaultChecked />
-                                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            {activeTab === 'security' && (
-                                <div className="space-y-6">
-                                    <h3 className="text-lg font-serif font-bold text-primary mb-4">Security Settings</h3>
-                                    <div className="p-4 bg-gray-50 rounded-lg">
-                                        <h4 className="font-semibold text-primary mb-2">Two-Factor Authentication</h4>
-                                        <p className="text-sm text-gray-600 mb-4">
-                                            Add an extra layer of security to your account
-                                        </p>
-                                        <button className="btn-outline text-sm">Enable 2FA</button>
-                                    </div>
-                                    <div className="p-4 bg-gray-50 rounded-lg">
-                                        <h4 className="font-semibold text-primary mb-2">Active Sessions</h4>
-                                        <p className="text-sm text-gray-600 mb-4">
-                                            Manage your active login sessions
-                                        </p>
-                                        <button className="btn-outline text-sm">View Sessions</button>
-                                    </div>
-                                </div>
-                            )}
-                        </motion.div>
-                    </div>
-                </div>
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h4 className="text-sm font-bold text-slate-800 flex items-center">
+                                    <Shield className="w-4 h-4 mr-1.5 text-gold" />
+                                    <span>Two-Factor Authentication (2FA)</span>
+                                </h4>
+                                <p className="text-xs text-slate-500 mt-0.5">Protect sensitive financial filings and personal records with SMS / Authenticator codes.</p>
+                            </div>
+                            <button className="px-4 py-2 bg-primary text-white font-bold rounded-xl text-xs hover:bg-primary-600 shadow-xs transition-colors shrink-0">
+                                Enable 2FA
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
             </div>
-        </div>
+        </PortalLayout>
     );
 }

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [tailwindcss(), react()],
-  base: '/Optivis-Tax/',  // Changed for GitHub Pages
+  base: './',  // Use relative paths for maximum portability
   server: {
     port: 3000,
     open: true

@@ -1,19 +1,24 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Menu,
     Plus,
     Send,
     Mail,
-    Clock
+    Clock,
+    Users,
+    CheckCircle,
+    FileText,
+    TrendingUp,
+    Radio,
+    Calendar,
+    Sparkles
 } from 'lucide-react';
-import AdminSidebar from '../../components/admin/AdminSidebar';
+import AdminLayout from '../../components/admin/AdminLayout';
 import Modal from '../../components/ui/Modal';
 import { mockNewsletters, mockSubscribers } from '../../data/mockData';
 import { useForm } from 'react-hook-form';
 
 export default function NewsletterPage() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [newsletters, setNewsletters] = useState(mockNewsletters || []);
     const [isComposeOpen, setIsComposeOpen] = useState(false);
     const [selectedTab, setSelectedTab] = useState('newsletters');
@@ -49,204 +54,235 @@ export default function NewsletterPage() {
         reset();
     };
 
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    const headerActions = (
+        <button
+            onClick={() => {
+                reset();
+                setIsComposeOpen(true);
+            }}
+            className="inline-flex items-center space-x-1.5 px-4 py-2 bg-linear-to-r from-primary to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 text-xs font-bold rounded-xl shadow-xs transition-all active:scale-95"
+        >
+            <Plus className="w-4 h-4 text-gold" />
+            <span>Compose Newsletter</span>
+        </button>
+    );
 
-            <div className="lg:pl-64">
-                <div className="bg-white border-b sticky top-0 z-30">
-                    <div className="px-6 py-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={() => setSidebarOpen(true)}
-                                className="lg:hidden text-gray-600"
-                            >
-                                <Menu className="w-6 h-6" />
-                            </button>
-                            <h1 className="text-2xl font-serif font-bold text-primary">Newsletter</h1>
-                        </div>
-                        <button
-                            onClick={() => setIsComposeOpen(true)}
-                            className="btn-primary flex items-center text-sm"
-                        >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Compose Newsletter
-                        </button>
+    return (
+        <AdminLayout
+            title="Newsletters & Dispatches"
+            subtitle="Broadcast monthly statutory tax bulletins, compliance alerts, and policy changes"
+            headerActions={headerActions}
+        >
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Subscribers</p>
+                        <p className="text-2xl font-serif font-bold text-primary mt-0.5">{activeSubscribers.length}</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <Users className="w-5 h-5" />
                     </div>
                 </div>
 
-                <div className="p-6">
-                    {/* Tabs */}
-                    <div className="flex space-x-4 mb-8">
-                        <button
-                            onClick={() => setSelectedTab('newsletters')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedTab === 'newsletters'
-                                ? 'bg-primary text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                                }`}
-                        >
-                            Newsletters
-                        </button>
-                        <button
-                            onClick={() => setSelectedTab('subscribers')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedTab === 'subscribers'
-                                ? 'bg-primary text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                                }`}
-                        >
-                            Subscribers ({activeSubscribers.length})
-                        </button>
+                <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Broadcasts Sent</p>
+                        <p className="text-2xl font-serif font-bold text-emerald-600 mt-0.5">
+                            {newsletters.filter(n => n.status === 'sent').length}
+                        </p>
                     </div>
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <Send className="w-5 h-5" />
+                    </div>
+                </div>
 
-                    {selectedTab === 'newsletters' ? (
-                        <div className="space-y-4">
-                            {newsletters.length > 0 ? (
-                                newsletters.map((newsletter, index) => (
-                                    <motion.div
-                                        key={newsletter.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className="bg-white rounded-xl shadow-sm p-6"
-                                    >
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex items-start space-x-4">
-                                                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${newsletter.status === 'sent'
-                                                    ? 'bg-green-50'
-                                                    : 'bg-yellow-50'
+                <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Avg. Engagement</p>
+                        <p className="text-2xl font-serif font-bold text-gold mt-0.5">94.2%</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-xl bg-gold/15 text-gold flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5" />
+                    </div>
+                </div>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold text-slate-600 max-w-xs mb-6">
+                <button
+                    onClick={() => setSelectedTab('newsletters')}
+                    className={`flex-1 py-2 rounded-lg transition-all ${selectedTab === 'newsletters' ? 'bg-white text-primary shadow-xs' : 'hover:text-primary'
+                        }`}
+                >
+                    Dispatches ({newsletters.length})
+                </button>
+                <button
+                    onClick={() => setSelectedTab('subscribers')}
+                    className={`flex-1 py-2 rounded-lg transition-all ${selectedTab === 'subscribers' ? 'bg-white text-primary shadow-xs' : 'hover:text-primary'
+                        }`}
+                >
+                    Subscribers ({activeSubscribers.length})
+                </button>
+            </div>
+
+            {/* Tab 1: Newsletters List */}
+            {selectedTab === 'newsletters' ? (
+                <div className="space-y-4">
+                    {newsletters.length > 0 ? (
+                        newsletters.map((newsletter, index) => (
+                            <motion.div
+                                key={newsletter.id}
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                                className="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-5 hover:shadow-md transition-all"
+                            >
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div className="flex items-start space-x-4 min-w-0">
+                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border ${newsletter.status === 'sent'
+                                                ? 'bg-emerald-50 text-emerald-600 border-emerald-200/50'
+                                                : 'bg-amber-50 text-amber-600 border-amber-200/50'
+                                            }`}>
+                                            <Mail className="w-6 h-6" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h3 className="font-semibold text-primary text-base truncate">{newsletter.subject}</h3>
+                                            <p className="text-xs text-slate-500 line-clamp-2 mt-1">{newsletter.content}</p>
+                                            <div className="flex items-center space-x-3 mt-2 text-xs">
+                                                <span className={`px-2.5 py-0.5 rounded-full font-semibold capitalize ${newsletter.status === 'sent'
+                                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                                        : 'bg-amber-50 text-amber-700 border border-amber-200'
                                                     }`}>
-                                                    <Mail className={`w-6 h-6 ${newsletter.status === 'sent'
-                                                        ? 'text-green-600'
-                                                        : 'text-yellow-600'
-                                                        }`} />
-                                                </div>
-                                                <div>
-                                                    <h3 className="font-semibold text-primary text-lg">{newsletter.subject}</h3>
-                                                    <p className="text-sm text-gray-500 mt-1">{newsletter.content}</p>
-                                                    <div className="flex items-center space-x-4 mt-2">
-                                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${newsletter.status === 'sent'
-                                                            ? 'bg-green-100 text-green-700'
-                                                            : 'bg-yellow-100 text-yellow-700'
-                                                            }`}>
-                                                            {newsletter.status}
-                                                        </span>
-                                                        {newsletter.sentAt && (
-                                                            <span className="text-xs text-gray-500 flex items-center">
-                                                                <Clock className="w-3 h-3 mr-1" />
-                                                                Sent: {newsletter.sentAt}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-sm text-gray-500">Recipients</p>
-                                                <p className="text-2xl font-bold text-primary">{newsletter.recipients}</p>
+                                                    {newsletter.status}
+                                                </span>
+                                                {newsletter.sentAt && (
+                                                    <span className="text-slate-400 flex items-center">
+                                                        <Clock className="w-3 h-3 mr-1" />
+                                                        Sent: {newsletter.sentAt}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
-                                    </motion.div>
-                                ))
-                            ) : (
-                                <div className="text-center py-12 text-gray-500">
-                                    No newsletters yet. Click "Compose Newsletter" to create one.
+                                    </div>
+
+                                    <div className="sm:text-right shrink-0 bg-slate-50 p-3 rounded-xl border border-slate-100 min-w-32">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Audience</span>
+                                        <p className="text-xl font-bold font-serif text-primary mt-0.5">
+                                            {newsletter.recipients} <span className="text-xs font-sans font-normal text-slate-500">recipients</span>
+                                        </p>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
+                            </motion.div>
+                        ))
                     ) : (
-                        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Subscriber</th>
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Email</th>
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Subscribed Date</th>
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-200">
-                                        {(mockSubscribers || []).map((subscriber) => (
-                                            <tr key={subscriber.id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center space-x-3">
-                                                        <div className="w-8 h-8 bg-primary-50 rounded-full flex items-center justify-center">
-                                                            <span className="text-sm font-semibold text-primary">
-                                                                {subscriber.name?.charAt(0) || 'S'}
-                                                            </span>
-                                                        </div>
-                                                        <span className="font-medium text-primary">{subscriber.name}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">{subscriber.email}</td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">{subscriber.subscribedAt}</td>
-                                                <td className="px-6 py-4">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${subscriber.active
-                                                        ? 'bg-green-100 text-green-700'
-                                                        : 'bg-gray-100 text-gray-500'
-                                                        }`}>
-                                                        {subscriber.active ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div className="bg-white rounded-2xl p-12 text-center border border-slate-200 text-slate-400">
+                            <Mail className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                            <p className="font-semibold text-slate-600">No newsletters dispatched yet</p>
+                            <p className="text-xs text-slate-400 mt-1">Click "Compose Newsletter" to send your first bulletin.</p>
                         </div>
                     )}
                 </div>
-            </div>
+            ) : (
+                /* Tab 2: Subscribers Table */
+                <div className="bg-white rounded-2xl shadow-xs border border-slate-200/80 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                                    <th className="px-6 py-3.5">Subscriber</th>
+                                    <th className="px-6 py-3.5">Email Address</th>
+                                    <th className="px-6 py-3.5">Subscribed Date</th>
+                                    <th className="px-6 py-3.5">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-sm">
+                                {(mockSubscribers || []).map((subscriber) => (
+                                    <tr key={subscriber.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="w-8 h-8 rounded-xl bg-primary-50 text-primary flex items-center justify-center font-bold text-xs">
+                                                    {subscriber.name?.charAt(0) || 'S'}
+                                                </div>
+                                                <span className="font-semibold text-slate-800">{subscriber.name}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-xs font-mono text-slate-600">{subscriber.email}</td>
+                                        <td className="px-6 py-4 text-xs text-slate-500">{subscriber.subscribedAt}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${subscriber.active
+                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                                    : 'bg-slate-100 text-slate-500'
+                                                }`}>
+                                                {subscriber.active ? 'Subscribed' : 'Unsubscribed'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
 
             {/* Compose Newsletter Modal */}
             <Modal
                 isOpen={isComposeOpen}
                 onClose={() => setIsComposeOpen(false)}
-                title="Compose Newsletter"
+                title="Compose Tax Dispatch Newsletter"
                 size="lg"
             >
-                <form onSubmit={handleSubmit(handleSendNewsletter)} className="space-y-6">
+                <form onSubmit={handleSubmit(handleSendNewsletter)} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                            Newsletter Subject *
+                        </label>
                         <input
-                            {...register('subject', { required: 'Subject is required' })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                            placeholder="Enter newsletter subject..."
+                            {...register('subject', { required: 'Subject line is required' })}
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all"
+                            placeholder="e.g. Optivis Monthly Tax Brief: Q3 VAT Filing Deadlines & Amendments"
                         />
-                        {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
+                        {errors.subject && <p className="text-rose-500 text-xs mt-1">{errors.subject.message}</p>}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Content *</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                            Bulletin Content *
+                        </label>
                         <textarea
                             {...register('content', { required: 'Content is required' })}
-                            rows={10}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                            placeholder="Write your newsletter content here..."
+                            rows={8}
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none transition-all font-sans"
+                            placeholder="Write your email body, key takeaways, and advisory notes..."
                         />
-                        {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>}
+                        {errors.content && <p className="text-rose-500 text-xs mt-1">{errors.content.message}</p>}
                     </div>
 
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                        <p className="text-sm text-blue-700">
-                            This newsletter will be sent to {activeSubscribers.length} active subscribers.
+                    <div className="bg-blue-50/80 border border-blue-200/60 p-3.5 rounded-xl flex items-center space-x-3 text-xs text-blue-800">
+                        <Users className="w-5 h-5 text-blue-600 shrink-0" />
+                        <p>
+                            This dispatch will be immediately broadcast to <strong className="text-primary">{activeSubscribers.length} verified active subscribers</strong>.
                         </p>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 pt-4 border-t border-slate-100">
                         <button
                             type="button"
                             onClick={handleSubmit(handleSaveDraft)}
-                            className="btn-outline flex-1"
+                            className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
                         >
-                            Save as Draft
+                            Save Draft
                         </button>
-                        <button type="submit" className="btn-primary flex-1 flex items-center justify-center">
-                            <Send className="w-4 h-4 mr-2" />
-                            Send Newsletter
+                        <button
+                            type="submit"
+                            className="flex-1 py-2.5 px-4 bg-linear-to-r from-primary to-primary-600 text-white rounded-xl text-xs font-bold hover:from-primary-600 hover:to-primary-700 shadow-sm transition-all flex items-center justify-center space-x-1.5"
+                        >
+                            <Send className="w-3.5 h-3.5 text-gold" />
+                            <span>Broadcast Newsletter</span>
                         </button>
                     </div>
                 </form>
             </Modal>
-        </div>
+        </AdminLayout>
     );
 }

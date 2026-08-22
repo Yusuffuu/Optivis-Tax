@@ -1,5 +1,5 @@
-// src/App.jsx - Fixed with unique import names
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx - Updated with HashRouter for maximum compatibility
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
@@ -27,7 +27,7 @@ import RequestsPage from './pages/portal/RequestsPage';
 import RequestDetailPage from './pages/portal/RequestDetailPage';
 import ReceiptsPage from './pages/portal/ReceiptsPage';
 import ChatPage from './pages/portal/ChatPage';
-import PortalSettingsPage from './pages/portal/SettingsPage'; // Renamed
+import PortalSettingsPage from './pages/portal/SettingsPage';
 
 // Admin Pages (from src/pages/admin/)
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -37,13 +37,14 @@ import AdminServicesPage from './pages/admin/ServicesPage';
 import AdminBlogPage from './pages/admin/BlogPage';
 import NewsletterPage from './pages/admin/NewsletterPage';
 import TestimonialsPage from './pages/admin/TestimonialsPage';
-import AdminSettingsPage from './pages/admin/SettingsPage'; // Renamed
+import AdminSettingsPage from './pages/admin/SettingsPage';
+import AdminChatPage from './pages/admin/ChatPage';
 
 function App() {
   return (
     <HelmetProvider>
       <AuthProvider>
-        <Router basename="/Optivis-Tax">
+        <Router>
           <ScrollToTop />
           <AnimatePresence mode="wait">
             <Routes>
@@ -132,6 +133,11 @@ function App() {
               <Route path="/admin/settings" element={
                 <ProtectedRoute adminOnly>
                   <AdminSettingsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/chat" element={
+                <ProtectedRoute adminOnly>
+                  <AdminChatPage />
                 </ProtectedRoute>
               } />
             </Routes>

@@ -157,3 +157,44 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(10, 42, 102, 0.15);
 }
+
+/* Custom Sleek Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(197, 162, 74, 0.25);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 162, 74, 0.5);
+}
+
+/* Subtle glow utilities */
+.glow-gold {
+  box-shadow: 0 0 25px -5px rgba(197, 162, 74, 0.3);
+}
+
+.glow-primary {
+  box-shadow: 0 0 30px -5px rgba(10, 42, 102, 0.35);
+}
+
+/* Tooltip fade-in animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+.tooltip-animate {
+  animation: fadeInScale 0.15s ease-out forwards;
+}

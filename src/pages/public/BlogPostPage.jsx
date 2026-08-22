@@ -1,191 +1,201 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock } from 'lucide-react';
+import {
+  Clock,
+  ArrowLeft,
+  Calendar,
+  User,
+  Share2,
+  Shield,
+  ArrowRight,
+  Sparkles
+} from 'lucide-react';
 import SEOHead from '../../components/seo/SEOHead';
-
-// This would typically come from an API or CMS
-const blogContent = {
-  'kenya-tax-changes-2024': {
-    title: 'Key Tax Changes in Kenya for 2024: What Businesses Need to Know',
-    category: 'Kenyan Tax Updates',
-    author: 'James Mwangi',
-    date: 'December 15, 2024',
-    readTime: '8 min read',
-    image: '/blog/tax-changes.jpg',
-    content: `
-      <p>The Kenyan tax landscape continues to evolve with significant changes introduced in the Finance Act 2024. Businesses operating in Kenya need to stay informed and adapt their tax strategies accordingly.</p>
-      
-      <h2>Major Tax Changes</h2>
-      
-      <h3>1. Corporate Tax Rate Adjustments</h3>
-      <p>The corporate income tax rate has been adjusted for certain sectors, with specific provisions for manufacturing and technology companies. Understanding these changes is crucial for effective tax planning.</p>
-      
-      <h3>2. Digital Services Tax Updates</h3>
-      <p>The digital services tax framework has been expanded to cover additional digital services, affecting both local and international digital businesses operating in Kenya.</p>
-      
-      <h3>3. VAT Modifications</h3>
-      <p>Several changes to VAT regulations have been implemented, including new exemptions and modified rates for specific goods and services.</p>
-      
-      <h2>Impact on Businesses</h2>
-      <p>These changes will have varying impacts depending on your business structure, industry, and operations. It's essential to review your tax strategy in light of these updates.</p>
-      
-      <h2>Recommendations</h2>
-      <ul>
-        <li>Review your current tax structure</li>
-        <li>Update compliance procedures</li>
-        <li>Consider restructuring opportunities</li>
-        <li>Consult with tax professionals</li>
-      </ul>
-    `,
-    tags: ['Kenya Tax', 'Finance Act 2024', 'Corporate Tax', 'VAT']
-  },
-  'international-tax-planning-strategies': {
-    title: '5 International Tax Planning Strategies for Multinational Corporations',
-    category: 'Global Tax Trends',
-    author: 'Amina Hassan',
-    date: 'December 10, 2024',
-    readTime: '6 min read',
-    image: '/blog/international-tax.jpg',
-    content: `
-      <p>In today's globalized economy, effective international tax planning is crucial for multinational corporations. Here are five strategies to optimize your global tax position.</p>
-      
-      <h2>1. Transfer Pricing Optimization</h2>
-      <p>Implement robust transfer pricing policies that align with your business operations and comply with local regulations.</p>
-      
-      <h2>2. Tax Treaty Planning</h2>
-      <p>Leverage bilateral tax treaties to minimize withholding taxes and avoid double taxation on cross-border transactions.</p>
-      
-      <h2>3. Intellectual Property Structuring</h2>
-      <p>Strategically locate IP assets in jurisdictions with favorable tax treatment for intellectual property income.</p>
-      
-      <h2>4. Supply Chain Management</h2>
-      <p>Structure your supply chain to optimize customs duties, VAT, and corporate tax implications.</p>
-      
-      <h2>5. Financing Structures</h2>
-      <p>Design efficient financing arrangements that balance tax benefits with commercial objectives.</p>
-    `,
-    tags: ['International Tax', 'Transfer Pricing', 'Tax Planning', 'Multinational']
-  }
-};
+import { mockBlogPosts } from '../../data/mockData';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = blogContent[slug];
+  const post = mockBlogPosts.find(p => p.slug === slug) || mockBlogPosts[0];
 
-  if (!post) {
-    return (
-      <div className="pt-32 pb-20 text-center">
-        <h1 className="text-4xl font-serif font-bold text-primary">Article Not Found</h1>
-        <Link to="/insights" className="btn-primary mt-8 inline-flex items-center">
-          <img src="./arrow-right.svg" alt="" className="mr-2 w-5 h-5 rotate-180" style={{ filter: 'brightness(0) invert(1)' }} />
-          Back to Insights
-        </Link>
-      </div>
-    );
-  }
+  const handleShare = (platform) => {
+    const url = window.location.href;
+    const text = encodeURIComponent(post.title);
+
+    const shareUrls = {
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    };
+
+    window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+  };
 
   return (
     <>
       <SEOHead
-        title={post.title}
-        description={post.content.replace(/<[^>]*>/g, '').substring(0, 160)}
-        ogUrl={`https://optivistax.com/insights/${slug}`}
+        title={`${post.title} | Optivis Tax Insights`}
+        description={post.excerpt}
       />
 
-      <article>
-        {/* Hero */}
-        <section className="pt-32 pb-20 bg-primary">
-          <div className="container-custom max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-white"
-            >
-              <Link to="/insights" className="inline-flex items-center text-gold hover:text-gold-300 mb-6">
-                <img src="./arrow-right.svg" alt="" className="mr-2 w-5 h-5 rotate-180" style={{ filter: 'invert(67%) sepia(38%) saturate(549%) hue-rotate(7deg) brightness(91%) contrast(87%)' }} />
-                Back to Insights
-              </Link>
-              <div className="flex items-center space-x-4 mb-4">
-                <span className="text-sm bg-gold text-primary px-3 py-1 rounded-full font-semibold">
-                  {post.category}
-                </span>
-                <span className="text-gray-300 flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {post.readTime}
-                </span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">{post.title}</h1>
-              <div className="flex items-center space-x-4 text-gray-300">
-                <div className="flex items-center">
-                  <img src="./user.svg" alt="" className="w-5 h-5 mr-2" style={{ filter: 'brightness(0) invert(1)' }} />
-                  {post.author}
-                </div>
-                <div className="flex items-center">
-                  <img src="./calendar.svg" alt="" className="w-5 h-5 mr-2" style={{ filter: 'brightness(0) invert(1)' }} />
-                  {post.date}
-                </div>
-              </div>
-            </motion.div>
+      {/* Hero Section */}
+      <section className="relative pt-36 pb-20 bg-linear-to-b from-[#041129] via-[#0A2A66] to-[#041129] text-white overflow-hidden">
+        <div className="absolute top-1/4 -left-40 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-gold/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-5">
+          <Link
+            to="/insights"
+            className="inline-flex items-center space-x-1.5 text-xs font-semibold text-gold hover:text-gold-200 transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to All Insights</span>
+          </Link>
+
+          <div className="flex items-center space-x-3">
+            <span className="text-[11px] font-semibold text-primary bg-gold px-3 py-0.5 rounded-full">
+              {post.category}
+            </span>
+            <span className="text-xs text-slate-300 flex items-center">
+              <Clock className="w-3.5 h-3.5 mr-1 text-gold" />
+              {post.readTime}
+            </span>
           </div>
-        </section>
 
-        {/* Content */}
-        <section className="section-padding bg-white">
-          <div className="container-custom max-w-4xl">
-            <div className="flex gap-12">
-              {/* Share buttons */}
-              <div className="hidden lg:block">
-                <div className="sticky top-24 space-y-4">
-                  <p className="text-sm text-gray-500 font-semibold">Share</p>
-                  <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-gold transition-colors">
-                    <img src="./facebook.svg" alt="Facebook" className="w-5 h-5" />
-                  </button>
-                  <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-gold transition-colors">
-                    <img src="./twitter.svg" alt="Twitter" className="w-5 h-5" />
-                  </button>
-                  <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-gold transition-colors">
-                    <img src="./linkedin.svg" alt="LinkedIn" className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
+            {post.title}
+          </h1>
 
-              {/* Article content */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-            </div>
-
-            {/* Tags */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <span key={tag} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="flex items-center space-x-4 text-xs text-slate-300 pt-2 border-t border-white/10">
+            <span className="flex items-center"><User className="w-3.5 h-3.5 mr-1 text-gold" /> {post.author}</span>
+            <span>•</span>
+            <span className="flex items-center"><Calendar className="w-3.5 h-3.5 mr-1 text-gold" /> {post.date || post.publishedDate}</span>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA */}
-        <section className="section-padding bg-primary">
-          <div className="container-custom text-center max-w-3xl">
-            <h2 className="text-3xl font-serif font-bold text-white mb-4">
-              Need Expert Tax Advice?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Contact our team for personalized guidance on your tax matters.
+      {/* Article Body Section */}
+      <section className="py-16 sm:py-20 bg-white relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Executive Summary Card */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200/80 mb-10 space-y-2">
+            <div className="flex items-center space-x-2 text-primary font-bold text-xs font-mono uppercase tracking-wider">
+              <Sparkles className="w-4 h-4 text-gold" />
+              <span>Executive Briefing</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans italic">
+              "{post.excerpt}"
             </p>
-            <Link to="/contact" className="btn-secondary text-lg">
-              Schedule a Consultation
+          </div>
+
+          {/* Article Main Text Content */}
+          <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-6 text-sm sm:text-base">
+            <p>
+              The Kenyan tax and fiscal landscape has undergone considerable transformation with recent amendments introduced by the revenue authority and National Treasury. For corporate directors and financial controllers, staying abreast of these regulatory shifts is paramount to optimizing effective tax rates and avoiding costly statutory penalties.
+            </p>
+
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-primary pt-4">
+              1. Statutory Filing Adjustments & Compliance Mandates
+            </h2>
+            <p>
+              Under recent statutory guidance, entities operating in the manufacturing, services, and digital economy sectors are subject to expanded withholding tax obligations and refined electronic tax invoice documentation standards. Failure to adhere to e-TIMS reconciliation protocols exposes corporations to deduction disallowances during annual returns assessment.
+            </p>
+
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-primary pt-4">
+              2. Cross-Border Transactions & Transfer Pricing Focus
+            </h2>
+            <p>
+              The revenue authority has intensified scrutiny over related-party management fees, software licenses, and cross-border intra-group financing. Having robust, contemporaneous transfer pricing documentation that mirrors genuine economic substance is no longer optional—it is a critical shield against arbitrary tax reassessments.
+            </p>
+
+            <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200/80 my-6">
+              <h4 className="font-bold text-amber-900 text-xs uppercase font-mono tracking-wider mb-1">
+                Strategic Partner Recommendation
+              </h4>
+              <p className="text-xs text-amber-800 leading-relaxed">
+                Prior to the close of each fiscal quarter, management should conduct a comprehensive statutory health check of all VAT input credits, withholding tax certificates, and related-party agreements.
+              </p>
+            </div>
+
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-primary pt-4">
+              3. Practical Action Steps for Corporate Management
+            </h2>
+            <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-slate-700">
+              <li>Conduct an internal audit of all input tax claims against validated e-TIMS records.</li>
+              <li>Re-evaluate existing intra-group agreements against updated EAC transfer pricing guidelines.</li>
+              <li>Engage certified tax counsel early when responding to pre-assessment audit inquiries from revenue officers.</li>
+            </ul>
+          </div>
+
+          {/* Social Share & Tags */}
+          <div className="mt-12 pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <span className="text-xs font-semibold text-slate-500">Share Analysis:</span>
+              <button
+                onClick={() => handleShare('linkedin')}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-gold hover:text-primary text-slate-600 transition-colors"
+                aria-label="Share on LinkedIn"
+                title="Share on LinkedIn"
+              >
+                <img src="/icons/linkedin.svg" alt="LinkedIn" className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleShare('twitter')}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-gold hover:text-primary text-slate-600 transition-colors"
+                aria-label="Share on Twitter"
+                title="Share on Twitter"
+              >
+                <img src="/icons/twitter.svg" alt="Twitter" className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleShare('facebook')}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-gold hover:text-primary text-slate-600 transition-colors"
+                aria-label="Share on Facebook"
+                title="Share on Facebook"
+              >
+                <img src="/icons/facebook.svg" alt="Facebook" className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert('Link copied to clipboard!');
+                }}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-gold hover:text-primary text-slate-600 transition-colors"
+                aria-label="Copy link"
+                title="Copy link"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">Kenyan Tax</span>
+              <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">Finance Act</span>
+              <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">Corporate Compliance</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Advisory CTA Banner */}
+      <section className="py-20 bg-linear-to-r from-[#0A2A66] via-[#0D3685] to-[#041129] text-white text-center">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+            Need Expert Counsel on This Matter?
+          </h2>
+          <p className="text-xs sm:text-base text-slate-200 leading-relaxed">
+            Schedule a direct consultation with our practice partners to discuss how these legislative provisions apply to your corporate operations.
+          </p>
+          <div className="pt-2">
+            <Link
+              to="/contact"
+              className="inline-flex items-center space-x-2 px-8 py-3.5 bg-linear-to-r from-gold to-gold-300 text-primary font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:scale-102 transition-all active:scale-95"
+            >
+              <span>Schedule Case Consultation</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-        </section>
-      </article>
+        </div>
+      </section>
     </>
   );
 }
