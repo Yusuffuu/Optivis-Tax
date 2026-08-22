@@ -49,7 +49,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img
-              src="/logo.png"
+              src="./logo.png"
               alt="Optivis Tax"
               className={`h-12 w-auto object-contain transition-all duration-300 ${isScrolled ? 'brightness-100' : 'brightness-0 invert'
                 }`}
@@ -86,8 +86,8 @@ export default function Navbar() {
                     {/* Dropdown with padding bridge to prevent gap */}
                     <div
                       className={`absolute top-full left-0 pt-3 transition-all duration-200 ${openDropdown === item.name
-                          ? 'opacity-100 visible translate-y-0'
-                          : 'opacity-0 invisible -translate-y-1'
+                        ? 'opacity-100 visible translate-y-0'
+                        : 'opacity-0 invisible -translate-y-1'
                         }`}
                     >
                       <div className="w-64 bg-white rounded-lg shadow-xl py-2 border border-gray-100">
@@ -108,10 +108,10 @@ export default function Navbar() {
                   <Link
                     to={item.href}
                     className={`font-medium transition-colors ${location.pathname === item.href
-                        ? 'text-gold'
-                        : isScrolled
-                          ? 'text-gray-800 hover:text-gold'
-                          : 'text-white hover:text-gold'
+                      ? 'text-gold'
+                      : isScrolled
+                        ? 'text-gray-800 hover:text-gold'
+                        : 'text-white hover:text-gold'
                       }`}
                   >
                     {item.name}
